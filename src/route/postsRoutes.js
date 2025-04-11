@@ -8,38 +8,38 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
-// Configure Multer storage settings
+// Configurar as definições de armazenamento do Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Set the destination directory for uploaded files (./uploads in this case)
+    // Defina o diretório de destino para os arquivos enviados (./uploads neste caso)
     cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    // Keep the original filename for uploaded files
+    // Mantenha o nome do arquivo original para os arquivos enviados
     cb(null, file.originalname);
   }
 });
 
-// Create a Multer instance with the configured storage
+// Crie uma instância do Multer com o armazenamento configurado
 const upload = multer({
-  dest: "./uploads", // Alternative destination (commented out)
+  dest: "./uploads", // Destino alternativo (comentado)
   storage
 });
 
-// Function to define routes for the app
+// Função para definir rotas para o aplicativo
 const route = (app) => {
-  // Enable parsing of JSON data in request body
+  // Habilitar análise de dados JSON no corpo da solicitação
   app.use(express.json());
 
   app.use(cors(corsOptions));
 
-  // GET route to list all posts
+  // Rota GET para listar todas as postagens
   app.get("/posts", listarPosts);
 
-  // POST route to create a new post (without image upload)
+  // Rota POST para criar uma nova postagem (sem upload de imagem)
   app.post("/posts", enviarPost);
 
-  // POST route to upload an image and create a new post
+  // Rota POST para carregar uma imagem e criar uma nova postagem
   app.post("/upload", upload.single("image"), uploadImage);
 
   app.put("/upload/:id", atualizarNovoPost);
